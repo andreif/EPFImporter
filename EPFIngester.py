@@ -368,6 +368,7 @@ class Ingester(object):
             stringList = ["(%s)" % (", ".join(aRecord)) for aRecord in escapedRecords]
             
             cur = conn.cursor()
+            cur.connection.autocommit(True)
             colVals = unicode(", ".join(stringList), 'utf-8')
             exStr = exStrTemplate % (commandString, ignoreString, tableName, colNamesStr, colVals)
             #unquote NULLs
