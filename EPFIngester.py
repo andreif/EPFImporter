@@ -302,6 +302,9 @@ class Ingester(object):
         lst = [" ".join(aPair) for aPair in colPairs] #list comprehension
         paramStr = ",".join(lst)
         #paramString now looks like "export_date BIGINT, storefront_id INT, country_code VARCHAR(100)" etc.
+        #replace VARCHAR(4000) by TEXT
+        paramStr = paramStr.replace("VARCHAR(4000)", "TEXT");
+        #paramStr = paramStr.replace("VARCHAR(1000)", "TEXT");
         exStr = """CREATE TABLE %s (%s)""" % (tableName, paramStr)
         cur.execute(exStr) #create the table in the database
         #set the primary key
@@ -319,8 +322,15 @@ class Ingester(object):
             conn = self.connect()
             cur = conn.cursor()
             pkStr = ", ".join(pkLst)
-            exStr = """ALTER TABLE %s ADD CONSTRAINT PRIMARY KEY (%s)""" % (tableName, pkStr)
+            exStr = """ALTER IGNORE TABLE %s ADD CONSTRAINT PRIMARY KEY (%s)""" % (tableName, pkStr)
             cur.execute(exStr)
+            
+            if type(pkLst) is list:
+            	for item in pkLst:
+            		LOGGER.info("Create Index %s for %s", item, tableName)
+            		exStr = """CREATE INDEX %s ON %s (%s)""" % (item, tableName, item)
+            		cur.execute(exStr)
+            
             conn.close()
         
 
