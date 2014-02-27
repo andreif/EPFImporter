@@ -304,7 +304,7 @@ class Ingester(object):
         #paramString now looks like "export_date BIGINT, storefront_id INT, country_code VARCHAR(100)" etc.
         #replace VARCHAR(4000) by TEXT
         paramStr = paramStr.replace("VARCHAR(4000)", "TEXT");
-        #paramStr = paramStr.replace("VARCHAR(1000)", "TEXT");
+        paramStr = paramStr.replace("VARCHAR(1000)", "TEXT");
         exStr = """CREATE TABLE %s (%s)""" % (tableName, paramStr)
         cur.execute(exStr) #create the table in the database
         #set the primary key
