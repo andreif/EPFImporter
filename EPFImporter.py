@@ -38,8 +38,6 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from __future__ import with_statement
-import logging
-import logging.handlers
 import EPFIngester
 import MySQLdb
 import psycopg2
@@ -56,6 +54,7 @@ import optparse
 import ConfigParser
 import logging
 import logging.config
+import logging.handlers
 import errno
 
 
